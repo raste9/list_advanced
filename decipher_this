@@ -1,0 +1,25 @@
+def decipher_word(word):
+    result = []
+    numbers = ""
+    for char in word:
+        if char.isnumeric():
+            numbers += char
+        else:
+            result.append(char)
+    if numbers:
+        first_char = chr(int(numbers))
+        result[0], result[-1] = result[-1], result[0]
+        return first_char + ''.join(result)
+    else:
+        return word
+
+def decipher_message(message):
+    words = message.split()
+    deciphered_words = [decipher_word(word) for word in words]
+    return ' '.join(deciphered_words)
+
+input_message = input()
+
+deciphered_message = decipher_message(input_message)
+print(deciphered_message)
+
