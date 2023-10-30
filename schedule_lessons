@@ -1,0 +1,72 @@
+def add_lesson(lessons, title):
+    if title not in lessons:
+        lessons.append(title)
+
+def insert_lesson(lessons, title, index):
+    if index < len(lessons) and title not in lessons:
+        lessons.insert(index, title)
+
+def remove_lesson(lessons, title):
+    if title in lessons:
+        lessons.remove(title)
+        exercise = title + "-Exercise"
+        if exercise in lessons:
+            lessons.remove(exercise)
+
+def swap_lessons(lessons, first_title, second_title):
+    if first_title in lessons and second_title in lessons:
+        first_index = lessons.index(first_title)
+        second_index = lessons.index(second_title)
+        first_exercise = first_title + "-Exercise"
+        second_exercise = second_title + "-Exercise"
+        if first_exercise in lessons and second_exercise in lessons:
+            lessons[first_index], lessons[second_index] = lessons[second_index], lessons[first_index]
+            lessons.remove(first_exercise)
+            lessons.remove(second_exercise)
+            lessons.insert(second_index + 1, first_exercise)
+            lessons.insert(first_index + 1, second_exercise)
+        elif first_exercise in lessons:
+            lessons[first_index], lessons[second_index] = lessons[second_index], lessons[first_index]
+            lessons.remove(first_exercise)
+            lessons.insert(second_index + 1, first_exercise)
+        elif second_exercise in lessons:
+            lessons[first_index], lessons[second_index] = lessons[second_index], lessons[first_index]
+            lessons.remove(second_exercise)
+            lessons.insert(first_index + 1, second_exercise)
+        else:
+            lessons[first_index], lessons[second_index] = lessons[second_index], lessons[first_index]
+
+def add_exercise(lessons, title):
+    exercise = title + "-Exercise"
+    if title in lessons and exercise not in lessons:
+        index = lessons.index(title)
+        lessons.insert(index + 1, exercise)
+    elif title not in lessons:
+        lessons.append(title)
+        lessons.append(exercise)
+
+lessons = input().split(", ")
+
+while True:
+    command = input()
+    if command == "course start":
+        break
+    command = command.split(":")
+    cmd = command[0]
+    title = command[1]
+
+    if cmd == "Add":
+        add_lesson(lessons, title)
+    elif cmd == "Insert":
+        index = int(command[2])
+        insert_lesson(lessons, title, index)
+    elif cmd == "Remove":
+        remove_lesson(lessons, title)
+    elif cmd == "Swap":
+        second_title = command[2]
+        swap_lessons(lessons, title, second_title)
+    elif cmd == "Exercise":
+        add_exercise(lessons, title)
+
+for i, lesson in enumerate(lessons, start=1):
+    print(f"{i}.{lesson}")
